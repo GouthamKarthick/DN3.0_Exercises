@@ -1,0 +1,26 @@
+Question 1:
+Explain Big O notation and how it helps in analyzing algorithms.
+
+Big O notation used to describe the upper bound of an algorithm's time or space complexity.
+It helps in analyzing and comparing the efficiency of algorithm by focusing on the worst-case scenarios as the input size grows and checks 
+the performance and scalability of the algorithm.
+
+Question 2:
+Describe the best, average, and worst-case scenarios for search operations.
+
+Linear search:
+Best : O(1) - when first element is target
+Average : O(n)
+Worst : O(n) - when the target is last element or not found
+
+Binary search:
+Best : O(1) 0 when the target is middle element
+Average : O(log n) 
+Worst : O(log n) when target is not present
+
+Question 3:
+Discuss which algorithm is more suitable for your platform and why.
+
+For e-commerce platform, binary search is more suitable because due to logarithmic time complexity, which ensures
+fast searching through the products. However the product list is to sorted. So cost of maintaining the sorted list is taken
+into account

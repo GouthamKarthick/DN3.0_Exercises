@@ -1,0 +1,28 @@
+Question 1:
+Explain why data structures and algorithms are essential in handling large inventories.
+
+Data structures and algorithms are crucial for managing large inventories because
+    1. Performance: Optimized data structures ensure faster access, insertion, deletion and updatation of data which is vital for real-time inventory management
+    2. Memory management: Utilize the memory efficiently and reduce overloading
+    3. data Integrity: Ensures consistency and correctioness of data
+    4. Scalability: data structures with proper algorithms can handle large volumes of data without any adverse degradation of performance
+
+Question 2:
+Discuss the types of data structures suitable for this problem.
+
+HashMap is suitable for this problem because inventory management system requires fast searching, insertion and deletion operations
+which are provided in O(1) complexity
+
+Question 3:
+Analyze the time complexity of each operation (add, update, delete) in your chosen data structure.
+    The complexity of add is O(1) which is constant time, update operation provides complexity of O(1) which
+    involves accessing of keys and updating which is also done in constant time.
+    The complexity of deletion is O(1). 
+
+Question 4:
+Discuss how you can optimize these operations.
+
+this operations can be optimized by following means:
+    1. Concurrency handling: For multi-threaded environments, the usage of 'ConcurrentHashMap' avoids bottleneck by managing concurrency
+    2. batch operations:  Implement batch operations for adding, updating, or deleting multiple products to reduce the overhead of multiple method calls.
+    3. load factor management: Ensure the load factor of the HashMap is managed to avoid excessive rehashing, which can degrade performance.

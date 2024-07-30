@@ -1,0 +1,29 @@
+Question 1:
+Explain how arrays are represented in memory and their advantages.
+
+    Arrays are stored in contiguous memory locations. Each element is stored next to the previous element which allows efficient indexing.
+    Arrays supported direct access of its elements via the index which is calculated by starting address plus the index times the size of the element.
+    This allows O(1) complexity for accessing its elements.
+
+Question 2:
+Analyze the time complexity of each operation (add, search, traverse, delete).
+
+    Add: O(1) if array is not full. If resizing is needed the time complexity is O(n)
+    Serach: O(n) in worst case every element in the array is checked.
+    Traverse: O(n) as each element is visited once.
+    Delete: O(n) if the element is to be deleted is in first then every element needed to be shifted.
+
+Question 3:
+Discuss the limitations of arrays and when to use them.
+
+    limitations OF arrays are:
+        1. Fixed size: Size of the array is declared while creating it. So number of employees is varying
+                       i.e grows beyond capacity then it is suitable for usage.
+        2. Inefficient insertion and deletion: Inserting or deleting elements from the middle of the array requires shifting elements,
+                                               leading to O(n) time complexity.
+        3. Memory wastage: If the array is not fully utilizedm it leads to memory wastage.
+
+    When to use:
+        1. when size of the array is fixed.
+        2. when quick access of the elements is required.
+        3. When number of elements is relatively small.

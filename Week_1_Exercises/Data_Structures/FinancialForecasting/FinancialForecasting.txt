@@ -1,0 +1,23 @@
+Question 1:
+Explain the concept of recursion and how it can simplify certain problems.
+
+    Concept of Recursion:
+        Recursion is a method where solutions of the problem depends on solutions to subproblems. It is a function which called itself to solve the problem of smaller instance.
+        Base case: 
+            Condition on which recursion stops. It prevents infinite recursion and on which function completes.
+        Recursive case:
+            Here function calls itself with modified to break the problem into smaller subproblems.
+
+    Recursion simplifies the problems by dividing complex problems into smaller subproblems which are easier to solve.
+    recursion code is readable and more intuitive.
+    Reduces the code by avoiding explicit usage of loops.
+
+Question 2:
+Discuss the time complexity of your recursive algorithm.
+
+    Time complexity of recursive algorithm is O(n) because function makes a recursive call for each period.
+
+Question 3:
+Explain how to optimize the recursive solution to avoid excessive computation.
+    Recursion can be optimized by using memoization that is storing the result of sub problem which is already solved and reduce unnecessary recursion.
+    

@@ -1,0 +1,55 @@
+Question 1:
+Explain different sorting algorithms (Bubble Sort, Insertion Sort, Quick Sort, Merge Sort).
+
+Bubble Sort:
+    A comparsion sorting algorithm that repeatedly traverse the list, compares adjacent elements
+    and swaps them if they are in wrong order. This is repeated until the list is sorted. It is an 
+    in-place sorting algorithm.
+
+    Time complexity:
+        Best: O(n) - already sorted
+        Average and Worst: O(n^2)
+
+Insertion Sort:
+    Sort from small to higher element traversing an item at a given time. It is also an in-place sorting
+    algorithm but less efficient on larger arrays.
+
+    Time complexity:
+        Best: O(n) - already sorted
+        Average and Worst: O(n^2)
+
+Quick Sort:
+    It utilizes divide and conquer algorithm that selects a pivot element from the array
+    and partition other elements into two sub-arrays based on lesser/greater than the pivot.
+    These subarrays are sorted recursively.
+
+    Time complexity:
+        Best: O(n logn)
+        Average: O(n logn)
+        Worst: O(n^2) - when pivot is always smallest/largest.
+
+Merge Sort:
+    Divides the array into subarrays until each of them contain only single element
+    then merge the subarrays to produce sorted array recursively.
+
+    Time complexity:
+        Best, Average and Worst: O(n logn)
+
+Question 2:
+Compare the performance (time complexity) of Bubble Sort and Quick Sort.
+
+Bubble Sort:
+    Best: O(n)
+    Average and Worst: O(n^2)
+
+Quick Sort:
+    Best: O(n log n)
+    Average: O(n log n)
+    Worst: O(n^2) (when the pivot elements are always the smallest or largest)
+
+Question 3:
+Why Quick Sort is Generally Preferred Over Bubble Sort
+
+    Quick sort generally preferred over bubble sort because of the following:
+        Efficiency: Quick sort has average time complexity of O(n logn) whereas bubble sort has O(n^2) which is less efficient then quick sort.
+        Scalability: Quick sort can handle large array through it divide and conquer algorithm efficiently.
