@@ -1,6 +1,5 @@
 package InventoryManagementSystem;
 
-
 class Product {
     private String productId;
     private String productName;
