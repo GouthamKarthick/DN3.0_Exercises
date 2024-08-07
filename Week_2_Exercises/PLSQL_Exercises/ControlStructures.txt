@@ -1,0 +1,57 @@
+Exercise 1: Control Structures
+
+Scenario 1: The bank wants to apply a discount to loan interest rates for customers above 60 years old.
+Question: Write a PL/SQL block that loops through all customers, checks their age, and if they are above 60, apply a 1% discount to their current loan interest rates.
+
+DECLARE
+    CURSOR cust_cursor IS
+        SELECT customerId, loanId, interestRate
+        FROM customers c
+        JOIN loans l ON c.customerId = l.customerId
+        WHERE TRUNC(MONTHS_BETWEEN(SYSDATE, c.DOB)/12) > 60;
+BEGIN
+    FOR cust_rec IN cust_cursor LOOP
+        UPDATE loans
+        SET interestRate = interestRate - 1
+        WHERE loanId = cust_rec.loanId;
+    END LOOP;
+    
+    COMMIT;
+END;
+
+
+Scenario 2: A customer can be promoted to VIP status based on their balance.
+Question: Write a PL/SQL block that iterates through all customers and sets a flag IsVIP to TRUE for those with a balance over $10,000.
+
+DECLARE
+    CURSOR cust_cursor IS
+        SELECT c.customerId
+        FROM customers c INNER JOIN accounts a ON c.customerId = a.customerId
+        WHERE a.balance > 10000;
+BEGIN
+    FOR cust_rec IN cust_cursor LOOP
+        UPDATE customers
+        SET isVIP = 'TRUE'
+        WHERE customerId = cust_rec.customerId;
+    END LOOP;
+
+    COMMIT;
+END;
+
+
+Scenario 3: The bank wants to send reminders to customers whose loans are due within the next 30 days.
+Question: Write a PL/SQL block that fetches all loans due in the next 30 days and prints a reminder message for each customer.
+
+DECLARE
+    CURSOR loan_cursor IS
+        SELECT c.customerId, c.name, l.loanId, l.EndDate
+        FROM customers c
+        JOIN loans l ON c.customerId = l.customerId
+        WHERE l.EndDate BETWEEN SYSDATE AND SYSDATE + 30;
+BEGIN
+    FOR loan_rec IN loan_cursor LOOP
+        DBMS_OUTPUT.PUT_LINE('Reminder: Dear ' || loan_rec.name || 
+                             ', your loan with ID ' || loan_rec.loanId || 
+                             ' is due on ' || TO_CHAR(loan_rec.due_date, 'DD-MON-YYYY'));
+    END LOOP;
+END;

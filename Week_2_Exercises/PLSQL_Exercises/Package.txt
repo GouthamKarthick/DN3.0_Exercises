@@ -1,0 +1,189 @@
+Exercise 7: Packages
+
+Scenario 1: Group all customer-related procedures and functions into a package.
+Question: Create a package CustomerManagement with procedures for adding a new customer, updating customer details, and a function to get customer balance.
+
+CREATE OR REPLACE PACKAGE CustomerManagement AS
+    PROCEDURE AddNewCustomer(
+        p_customerId IN NUMBER,
+        p_name IN VARCHAR2,
+        p_DOB IN DATE
+    );
+    
+    PROCEDURE UpdateCustomerDetails(
+        p_customerId IN NUMBER,
+        p_name IN VARCHAR2,
+        p_DOB IN DATE
+    );
+    
+    FUNCTION GetCustomerBalance(
+        p_customerId IN NUMBER
+    ) RETURN NUMBER;
+END CustomerManagement;
+
+CREATE OR REPLACE PACKAGE BODY CustomerManagement AS
+
+    PROCEDURE AddNewCustomer(
+        p_customerId IN NUMBER,
+        p_name IN VARCHAR2,
+        p_DOB IN DATE
+    ) IS
+    BEGIN
+        INSERT INTO customers (customerId, name, DOB)
+        VALUES (p_customerId, p_name, p_DOB);
+        
+        COMMIT;
+    END AddNewCustomer;
+    
+    PROCEDURE UpdateCustomerDetails(
+        p_customerId IN NUMBER,
+        p_name IN VARCHAR2,
+        p_DOB IN DATE
+    ) IS
+    BEGIN
+        UPDATE customers
+        SET name = p_name,
+            DOB = p_DOB
+        WHERE customerId = p_customerId;
+        
+        COMMIT;
+    END UpdateCustomerDetails;
+    
+    FUNCTION GetCustomerBalance(
+        p_customerId IN NUMBER
+    ) RETURN NUMBER IS
+        v_balance NUMBER;
+    BEGIN
+        SELECT SUM(balance) INTO v_balance
+        FROM accounts
+        WHERE customerId = p_customerId;
+        
+        RETURN v_balance;
+    END GetCustomerBalance;
+
+END CustomerManagement;
+
+Scenario 2: Create a package to manage employee data.
+Question: Write a package EmployeeManagement with procedures to hire new employees, update employee details, and a function to calculate annual salary.
+
+CREATE OR REPLACE PACKAGE EmployeeManagement AS
+    PROCEDURE HireNewEmployee(
+        p_employeeId IN NUMBER,
+        p_name IN VARCHAR2,
+        p_department IN VARCHAR2,
+        p_salary IN NUMBER
+    );
+    
+    PROCEDURE UpdateEmployeeDetails(
+        p_employeeId IN NUMBER,
+        p_name IN VARCHAR2,
+        p_department IN VARCHAR2,
+        p_salary IN NUMBER
+    );
+    
+    FUNCTION CalculateAnnualSalary(
+        p_employeeId IN NUMBER
+    ) RETURN NUMBER;
+END EmployeeManagement;
+
+CREATE OR REPLACE PACKAGE BODY EmployeeManagement AS
+
+    PROCEDURE HireNewEmployee(
+        p_employeeId IN NUMBER,
+        p_name IN VARCHAR2,
+        p_department IN VARCHAR2,
+        p_salary IN NUMBER
+    ) IS
+    BEGIN
+        INSERT INTO employees (employeeId, name, department, salary)
+        VALUES (p_employeeId, p_name, p_department, p_salary);
+        
+        COMMIT;
+    END HireNewEmployee;
+    
+    PROCEDURE UpdateEmployeeDetails(
+        p_employeeId IN NUMBER,
+        p_name IN VARCHAR2,
+        p_department IN VARCHAR2,
+        p_salary IN NUMBER
+    ) IS
+    BEGIN
+        UPDATE employees
+        SET name = p_name,
+            department = p_department,
+            salary = p_salary
+        WHERE employeeId = p_employeeId;
+        
+        COMMIT;
+    END UpdateEmployeeDetails;
+    
+    FUNCTION CalculateAnnualSalary(
+        p_employeeId IN NUMBER
+    ) RETURN NUMBER IS
+        v_salary NUMBER;
+    BEGIN
+        SELECT salary INTO v_salary
+        FROM employees
+        WHERE employeeId = p_employeeId;
+        
+        RETURN v_salary * 12;
+    END CalculateAnnualSalary;
+
+END EmployeeManagement;
+
+Scenario 3: Group all account-related operations into a package.
+Question: Create a package AccountOperations with procedures for opening a new account, closing an account, and a function to get the total balance of a customer across all accounts.
+
+CREATE OR REPLACE PACKAGE AccountOperations AS
+    PROCEDURE OpenNewAccount(
+        p_accountId IN NUMBER,
+        p_customerId IN NUMBER,
+        p_initial_balance IN NUMBER
+    );
+    
+    PROCEDURE CloseAccount(
+        p_accountId IN NUMBER
+    );
+    
+    FUNCTION GetTotalBalance(
+        p_customerId IN NUMBER
+    ) RETURN NUMBER;
+END AccountOperations;
+
+CREATE OR REPLACE PACKAGE BODY AccountOperations AS
+
+    PROCEDURE OpenNewAccount(
+        p_accountId IN NUMBER,
+        p_customerId IN NUMBER,
+        p_initial_balance IN NUMBER
+    ) IS
+    BEGIN
+        INSERT INTO accounts (accountId, customerId, balance)
+        VALUES (p_accountId, p_customerId, p_initial_balance);
+        
+        COMMIT;
+    END OpenNewAccount;
+    
+    PROCEDURE CloseAccount(
+        p_accountId IN NUMBER
+    ) IS
+    BEGIN
+        DELETE FROM accounts
+        WHERE accountId = p_accountId;
+        
+        COMMIT;
+    END CloseAccount;
+    
+    FUNCTION GetTotalBalance(
+        p_customerId IN NUMBER
+    ) RETURN NUMBER IS
+        v_total_balance NUMBER;
+    BEGIN
+        SELECT SUM(balance) INTO v_total_balance
+        FROM accounts
+        WHERE customerId = p_customerId;
+        
+        RETURN v_total_balance;
+    END GetTotalBalance;
+
+END AccountOperations;

@@ -1,0 +1,86 @@
+Exercise 6: Cursors
+
+Scenario 1: Generate monthly statements for all customers.
+Question: Write a PL/SQL block using an explicit cursor GenerateMonthlyStatements that retrieves all transactions for the current month and prints a statement for each customer.
+
+DECLARE
+    CURSOR trans_cursor IS
+        SELECT c.customerId, c.name, t.transactionId, t.amount, t.startDate
+        FROM customers c
+        JOIN transactions t ON c.customerId = t.customerId
+        WHERE TO_CHAR(t.startDate, 'MM-YYYY') = TO_CHAR(SYSDATE, 'MM-YYYY');
+    v_customerId customers.customerId%TYPE;
+    v_name customers.name%TYPE;
+    v_transactionId transactions.transactionId%TYPE;
+    v_amount transactions.amount%TYPE;
+    v_startDate transactions.startDate%TYPE;
+BEGIN
+    OPEN trans_cursor;
+    LOOP
+        FETCH trans_cursor INTO v_customerId, v_name, v_transactionId, v_amount, v_startDate;
+        EXIT WHEN trans_cursor%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('Customer: ' || v_name || ' (ID: ' || v_customerId || ')');
+        DBMS_OUTPUT.PUT_LINE('Transaction ID: ' || v_transactionId || ', Amount: ' || v_amount || 
+                             ', Date: ' || TO_CHAR(v_startDate, 'DD-MON-YYYY'));
+        DBMS_OUTPUT.PUT_LINE('-------------------------------------------');
+    END LOOP;
+    CLOSE trans_cursor;
+END;
+
+Scenario 2: Apply annual fee to all accounts.
+Question: Write a PL/SQL block using an explicit cursor ApplyAnnualFee that deducts an annual maintenance fee from the balance of all accounts.
+
+DECLARE
+    CURSOR account_cursor IS
+        SELECT accountId, balance
+        FROM accounts;
+    v_accountId accounts.accountId%TYPE;
+    v_balance accounts.balance%TYPE;
+    v_annual_fee CONSTANT NUMBER := 50;  -- Assuming a fixed annual fee of $50
+BEGIN
+    OPEN account_cursor;
+    LOOP
+        FETCH account_cursor INTO v_accountId, v_balance;
+        EXIT WHEN account_cursor%NOTFOUND;
+
+        UPDATE accounts
+        SET balance = balance - v_annual_fee
+        WHERE accountId = v_accountId;
+
+        DBMS_OUTPUT.PUT_LINE('Annual fee of $' || v_annual_fee || ' applied to account ID ' || v_accountId);
+    END LOOP;
+    CLOSE account_cursor;
+
+    COMMIT;
+END;
+
+Scenario 3: Update the interest rate for all loans based on a new policy.
+Question: Write a PL/SQL block using an explicit cursor UpdateLoanInterestRates that fetches all loans and updates their interest rates based on the new policy.
+
+DECLARE
+    CURSOR loan_cursor IS
+        SELECT loanId, interestRate
+        FROM loans;
+    v_loanId loans.loanId%TYPE;
+    v_interestRate loans.interestRate%TYPE;
+    v_new_interestRate NUMBER;
+BEGIN
+    OPEN loan_cursor;
+    LOOP
+        FETCH loan_cursor INTO v_loanId, v_interestRate;
+        EXIT WHEN loan_cursor%NOTFOUND;
+
+        v_new_interestRate := v_interestRate + 0.5;
+
+        UPDATE loans
+        SET interestRate = v_new_interestRate
+        WHERE loanId = v_loanId;
+
+        DBMS_OUTPUT.PUT_LINE('Updated loan ID ' || v_loanId || ' with new interest rate ' || v_new_interestRate || '%');
+    END LOOP;
+    CLOSE loan_cursor;
+
+    COMMIT;
+END;
+/

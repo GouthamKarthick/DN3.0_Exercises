@@ -1,0 +1,52 @@
+Exercise 4: Functions
+
+Scenario 1: Calculate the age of customers for eligibility checks.
+Question: Write a function CalculateAge that takes a customer's date of birth as input and returns their age in years.
+
+CREATE OR REPLACE FUNCTION CalculateAge(
+    p_DOB IN DATE
+) RETURN NUMBER IS
+    v_age NUMBER;
+BEGIN
+    v_age := TRUNC(MONTHS_BETWEEN(SYSDATE, p_DOB) / 12);
+    RETURN v_age;
+END CalculateAge;
+
+Scenario 2: The bank needs to compute the monthly installment for a loan.
+Question: Write a function CalculateMonthlyInstallment that takes the loan amount, interest rate, and loan duration in years as input and returns the monthly installment amount.
+
+CREATE OR REPLACE FUNCTION CalculateMonthlyInstallment(
+    p_loanAmount IN NUMBER,
+    p_interestRate IN NUMBER,
+    p_loan_duration_years IN NUMBER
+) RETURN NUMBER IS
+    v_monthly_installment NUMBER;
+    v_monthly_interestRate NUMBER;
+    v_number_of_payments NUMBER;
+BEGIN
+    v_monthly_interestRate := p_interestRate / 12 / 100;
+    v_number_of_payments := p_loan_duration_years * 12;
+
+    v_monthly_installment := (p_loanAmount * v_monthly_interestRate) /
+                             (1 - POWER((1 + v_monthly_interestRate), -v_number_of_payments));
+
+    RETURN v_monthly_installment;
+END CalculateMonthlyInstallment;
+
+Scenario 3: Check if a customer has sufficient balance before making a transaction.
+Question: Write a function HasSufficientBalance that takes an account ID and an amount as input and returns a boolean indicating whether the account has at least the specified amount.
+
+CREATE OR REPLACE FUNCTION HasSufficientBalance(
+    p_accountId IN NUMBER,
+    p_amount IN NUMBER
+) RETURN BOOLEAN IS
+    v_balance NUMBER;
+BEGIN
+    SELECT balance INTO v_balance FROM accounts WHERE accountId = p_accountId;
+
+    IF v_balance >= p_amount THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END HasSufficientBalance;

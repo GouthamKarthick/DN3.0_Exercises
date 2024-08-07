@@ -1,0 +1,64 @@
+Exercise 3: Stored Procedures
+
+Scenario 1: The bank needs to process monthly interest for all savings accounts.
+Question: Write a stored procedure ProcessMonthlyInterest that calculates and updates the balance of all savings accounts by applying an interest rate of 1% to the current balance.
+
+CREATE OR REPLACE PROCEDURE ProcessMonthlyInterest IS
+    v_interest_rate CONSTANT NUMBER := 0.01;
+BEGIN
+    UPDATE accounts
+    SET balance = balance + (balance * v_interest_rate)
+    WHERE accountType = 'Savings';
+
+    COMMIT;
+END ProcessMonthlyInterest;
+
+Scenario 2: The bank wants to implement a bonus scheme for employees based on their performance.
+Question: Write a stored procedure UpdateEmployeeBonus that updates the salary of employees in a given department by adding a bonus percentage passed as a parameter.
+
+CREATE OR REPLACE PROCEDURE UpdateEmployeeBonus(
+    p_department IN VARCHAR2,
+    p_bonus_percentage IN NUMBER
+) IS
+BEGIN
+    UPDATE employees
+    SET salary = salary + (salary * p_bonus_percentage / 100)
+    WHERE department = p_department;
+
+    COMMIT;
+END UpdateEmployeeBonus;
+
+Scenario 3: Customers should be able to transfer funds between their accounts.
+Question: Write a stored procedure TransferFunds that transfers a specified amount from one account to another, checking that the source account has sufficient balance before making the transfer.
+
+CREATE OR REPLACE PROCEDURE TransferFunds(
+    p_from_account_id IN NUMBER,
+    p_to_account_id IN NUMBER,
+    p_amount IN NUMBER
+) IS
+    v_balance NUMBER;
+BEGIN
+    -- Check if the source account has sufficient balance
+    SELECT balance INTO v_balance FROM accounts WHERE account_id = p_from_account_id FOR UPDATE;
+
+    IF v_balance < p_amount THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Insufficient balance for the transfer.');
+    END IF;
+
+    UPDATE accounts
+    SET balance = balance - p_amount
+    WHERE account_id = p_from_account_id;
+
+    UPDATE accounts
+    SET balance = balance + p_amount
+    WHERE account_id = p_to_account_id;
+
+    INSERT INTO Transactions VALUES(transactionId.nextval, p_from_accountId, SYSDATE, p_amount, p_transcationType);
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END TransferFunds;
+/
