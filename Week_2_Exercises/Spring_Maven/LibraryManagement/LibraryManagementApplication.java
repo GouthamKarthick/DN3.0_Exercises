@@ -1,4 +1,4 @@
-package Week_2_Exercises.Spring_Maven.LibraryManagement.src.main.java.com.library;
+package com.library;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

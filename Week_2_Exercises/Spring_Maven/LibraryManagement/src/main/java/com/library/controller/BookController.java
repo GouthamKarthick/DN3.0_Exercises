@@ -1,7 +1,7 @@
-package Week_2_Exercises.Spring_Maven.LibraryManagement.src.main.java.com.library.controller;
+package com.library.controller;
 
-import Week_2_Exercises.Spring_Maven.LibraryManagement.com.library.entity.*;
-import Week_2_Exercises.Spring_Maven.LibraryManagement.com.library.service.*;
+import com.library.entity.Book;
+import com.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,33 +10,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 public class BookController {
-
+    
     @Autowired
-    private BookService bookService;
+    private BookRepository bookRepository;
 
     @GetMapping
     public List<Book> getAllBooks() {
-        return bookService.getAllBooks();
-    }
-
-    @GetMapping("/{id}")
-    public Book getBookById(@PathVariable Long id) {
-        return bookService.getBookById(id);
+        return bookRepository.findAll();
     }
 
     @PostMapping
-    public Book createBook(@RequestBody Book book) {
-        return bookService.saveBook(book);
+    public Book addBook(@RequestBody Book book) {
+        return bookRepository.save(book);
     }
 
-    @PutMapping("/{id}")
-    public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
-        book.setId(id);
-        return bookService.saveBook(book);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable Long id) {
-        bookService.deleteBook(id);
-    }
+    // Other CRUD operations
 }
